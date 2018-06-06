@@ -5,6 +5,16 @@
     <title></title>
   </head>
   <body>
+    <button>CLICK ME!</button>
 
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io(location.href);
+
+      document.querySelector('button').addEventListener('click', function (e) {
+        socket.emit('touch');
+      });
+    </script>
   </body>
 </html>

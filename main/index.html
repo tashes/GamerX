@@ -6,14 +6,34 @@
   </head>
   <body>
     <div id="viewport">
-      <canvas id="canvas"></canvas>
+      <ul></ul>
     </div>
 
     <script>
       const electron = require('electron');
-      {ipcRenderer} = electron;
+      const ip = require('ip');
 
+      const {ipcRenderer} = electron;
 
+      function log (message) {
+        let li = document.createElement('li');
+        li.innerHTML = message;
+        document.querySelector('ul').appendChild(li);
+        li.scrollIntoView();
+      }
+
+      ipcRenderer.on('controllers::ready', function (e) {
+        log(`Connect controllers to ${ip.address()}:9577`);
+      });
+      ipcRenderer.on('controllers::new', function (e, id) {
+        log(`New player: ${id}`);
+      })
+      ipcRenderer.on('controllers::leave', function (e, id) {
+        log(`Player leaving: ${id}`);
+      });
+      ipcRenderer.on('touch', function (e, id) {
+        log(`Player ${id} has touched.`);
+      });
     </script>
   </body>
 </html>
